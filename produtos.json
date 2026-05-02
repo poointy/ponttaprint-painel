@@ -1,0 +1,102 @@
+[
+  {
+    "produto": "Cartão de visita",
+    "material": "Couchê 300g",
+    "tamanho": "87x47mm",
+    "acabamento": "Laminação fosca",
+    "precos": [
+      {
+        "quantidade": "100",
+        "preco": "50"
+      },
+      {
+        "quantidade": "500",
+        "preco": "120"
+      },
+      {
+        "quantidade": "1000",
+        "preco": "200"
+      }
+    ]
+  },
+  {
+    "produto": "Cartão de visita",
+    "material": "Reciclado 240g",
+    "tamanho": "87x47mm",
+    "acabamento": "Laminação brilho",
+    "precos": [
+      {
+        "quantidade": "100",
+        "preco": "60"
+      },
+      {
+        "quantidade": "500",
+        "preco": "140"
+      },
+      {
+        "quantidade": "1000",
+        "preco": "220"
+      }
+    ]
+  },
+  {
+    "produto": "Panfletos",
+    "material": "Couchê 90g",
+    "tamanho": "A5",
+    "acabamento": "Sem acabamento",
+    "precos": [
+      {
+        "quantidade": "1000",
+        "preco": "150"
+      },
+      {
+        "quantidade": "5000",
+        "preco": "600"
+      },
+      {
+        "quantidade": "10000",
+        "preco": "1000"
+      }
+    ]
+  },
+  {
+    "produto": "Panfletos",
+    "material": "Couchê 120g",
+    "tamanho": "A5",
+    "acabamento": "Laminação brilho",
+    "precos": [
+      {
+        "quantidade": "1000",
+        "preco": "200"
+      },
+      {
+        "quantidade": "5000",
+        "preco": "750"
+      },
+      {
+        "quantidade": "10000",
+        "preco": "1200"
+      }
+    ]
+  },
+  {
+    "produto": "Panfletos",
+    "material": "Couchê 150g",
+    "tamanho": "10x15cm",
+    "acabamento": "Laminação fosca",
+    "precos": [
+      {
+        "quantidade": "1000",
+        "preco": "250"
+      },
+      {
+        "quantidade": "5000",
+        "preco": "900"
+      },
+      {
+        "quantidade": "10000",
+        "preco": "1400"
+      }
+    ]
+  }
+]

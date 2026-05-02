@@ -1,0 +1,8 @@
+node_modules
+.env
+sessions
+artes
+.webjs_cache
+auth
+auth_pontta
+pedidos.txt

@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Pontta Print Painel</title>
+
+<style>
+:root {
+  --azul: #0a2342;
+  --laranja: #ff6b35;
+  --fundo: #f3f5f8;
+  --card: #ffffff;
+  --texto: #1f2937;
+  --cinza: #6b7280;
+  --borda: #e5e7eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--fundo);
+  margin: 0;
+  color: var(--texto);
+}
+
+header {
+  background: linear-gradient(135deg, #0a2342, #123b6d);
+  color: white;
+  padding: 28px 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+header p {
+  margin: 8px 0 0;
+  color: #dbeafe;
+}
+
+.container {
+  padding: 24px;
+  max-width: 1150px;
+  margin: auto;
+}
+
+.grid-dashboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.metric-card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--borda);
+}
+
+.metric-card span {
+  color: var(--cinza);
+  font-size: 14px;
+}
+
+.metric-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 28px;
+  color: var(--azul);
+}
+
+.card {
+  background: var(--card);
+  padding: 22px;
+  margin-bottom: 22px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--borda);
+}
+
+.card h2 {
+  margin-top: 0;
+  color: var(--azul);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+select, input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #cfd6df;
+  background: white;
+  font-size: 14px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--cinza);
+}
+
+button {
+  background: var(--laranja);
+  border: none;
+  color: white;
+  padding: 11px 14px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+button:hover {
+  filter: brightness(0.95);
+}
+
+.btn-secundario {
+  background: #334155;
+}
+
+.btn-perigo {
+  background: #dc2626;
+}
+
+.btn-cinza {
+  background: #6b7280;
+}
+
+.btn-pequeno {
+  padding: 8px 10px;
+  font-size: 13px;
+  margin-right: 6px;
+}
+
+.linha {
+  height: 3px;
+  background: var(--laranja);
+  margin: 30px 0;
+  border-radius: 10px;
+}
+
+.preco-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: end;
+  margin-top: 8px;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.tabs button {
+  background: #e5e7eb;
+  color: #111827;
+  margin-top: 0;
+}
+
+.tabs button.active {
+  background: var(--laranja);
+  color: white;
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.produto-card {
+  background: #f9fafb;
+  padding: 16px;
+  margin-top: 12px;
+  border-radius: 12px;
+  border-left: 5px solid var(--laranja);
+  border: 1px solid var(--borda);
+}
+
+.produto-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.produto-card h3 {
+  margin: 0 0 8px;
+  color: var(--azul);
+}
+
+.badge {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #075985;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.precos {
+  margin-top: 10px;
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid var(--borda);
+}
+
+.status-edicao {
+  display: none;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  font-weight: bold;
+}
+
+.vazio {
+  color: var(--cinza);
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 10px;
+  border: 1px dashed #cbd5e1;
+}
+
+@media (max-width: 800px) {
+  .grid-dashboard,
+  .form-grid,
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .preco-row {
+    grid-template-columns: 1fr;
+  }
+
+  .produto-card-header {
+    flex-direction: column;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Pontta Print - Painel</h1>
+  <p>Gerencie produtos, materiais, acabamentos, tamanhos e preços do seu atendimento.</p>
+</header>
+
+<div class="container">
+
+<!-- DASHBOARD -->
+<div class="grid-dashboard">
+  <div class="metric-card">
+    <span>Total de produtos cadastrados</span>
+    <strong id="dashTotalProdutos">0</strong>
+  </div>
+
+  <div class="metric-card">
+    <span>Categorias com produtos</span>
+    <strong id="dashCategorias">0</strong>
+  </div>
+
+  <div class="metric-card">
+    <span>Preço médio cadastrado</span>
+    <strong id="dashMedia">R$ 0,00</strong>
+  </div>
+</div>
+
+<!-- CADASTRO -->
+<div class="card">
+<h2>Cadastrar Produto</h2>
+
+<div id="statusEdicao" class="status-edicao">
+  Editando produto existente. Ao salvar, ele será atualizado.
+</div>
+
+<div class="form-grid">
+  <div>
+    <label>Produto</label>
+    <select id="produto"></select>
+  </div>
+
+  <div>
+    <label>Material</label>
+    <select id="material"></select>
+  </div>
+
+  <div>
+    <label>Tamanho</label>
+    <select id="tamanho"></select>
+  </div>
+
+  <div>
+    <label>Acabamento</label>
+    <select id="acabamento"></select>
+  </div>
+</div>
+
+<div id="precos"></div>
+
+<button onclick="addPreco()">+ Preço</button>
+<button onclick="salvar()">Salvar Produto</button>
+<button class="btn-cinza" onclick="limparFormulario()">Limpar</button>
+<button class="btn-secundario" id="btnCancelarEdicao" onclick="cancelarEdicao()" style="display:none;">Cancelar edição</button>
+</div>
+
+<div class="linha"></div>
+
+<!-- NOVOS DADOS -->
+<div class="card">
+<h2>Adicionar Novo Dado</h2>
+
+<div class="form-grid">
+  <div>
+    <label>Tipo</label>
+    <select id="tipoNovo">
+      <option value="produtos">Produto</option>
+      <option value="materiais">Material</option>
+      <option value="tamanhos">Tamanho</option>
+      <option value="acabamentos">Acabamento</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Novo valor</label>
+    <input id="valorNovo" placeholder="Digite aqui">
+  </div>
+</div>
+
+<button onclick="addNovo()">Adicionar</button>
+</div>
+
+<div class="linha"></div>
+
+<!-- LISTA -->
+<div class="card">
+<h2>Produtos Cadastrados</h2>
+
+<div class="toolbar">
+  <input id="busca" placeholder="Buscar por produto, material, tamanho ou acabamento..." oninput="renderizarLista()">
+  <button class="btn-secundario" onclick="carregarTudo()">Atualizar</button>
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div id="lista"></div>
+
+</div>
+
+</div>
+
+<script>
+let editIndex = null;
+let produtosCache = [];
+let categoriasCache = {};
+let categoriaAtual = null;
+
+// ===== UTIL =====
+function formatarMoeda(valor) {
+  const numero = Number(String(valor).replace(",", "."));
+
+  if (isNaN(numero)) return "R$ 0,00";
+
+  return numero.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
+
+// ===== CARREGAR TUDO =====
+async function carregarTudo() {
+  await carregarConfig();
+  await carregarProdutos();
+  await carregarStats();
+}
+
+// ===== CARREGAR CONFIG =====
+async function carregarConfig() {
+  const res = await fetch("/config");
+  const config = await res.json();
+
+  preencher("produto", config.produtos || []);
+  preencher("material", config.materiais || []);
+  preencher("tamanho", config.tamanhos || []);
+  preencher("acabamento", config.acabamentos || []);
+}
+
+function preencher(id, lista) {
+  const select = document.getElementById(id);
+  select.innerHTML = "";
+
+  lista.forEach(item => {
+    const op = document.createElement("option");
+    op.value = item;
+    op.textContent = item;
+    select.appendChild(op);
+  });
+}
+
+// ===== DASHBOARD =====
+async function carregarStats() {
+  const res = await fetch("/stats");
+  const stats = await res.json();
+
+  document.getElementById("dashTotalProdutos").textContent = stats.totalProdutos || 0;
+  document.getElementById("dashCategorias").textContent = stats.totalCategorias || 0;
+  document.getElementById("dashMedia").textContent = formatarMoeda(stats.mediaPreco || 0);
+}
+
+// ===== PREÇOS =====
+function addPreco(q = "", p = "") {
+  const div = document.createElement("div");
+  div.className = "preco-row";
+
+  div.innerHTML = `
+    <div>
+      <label>Quantidade</label>
+      <input placeholder="Ex: 1000" value="${q}">
+    </div>
+
+    <div>
+      <label>Preço</label>
+      <input placeholder="Ex: 150" value="${p}">
+    </div>
+
+    <button class="btn-perigo btn-pequeno" onclick="removerPreco(this)">Remover</button>
+  `;
+
+  document.getElementById("precos").appendChild(div);
+}
+
+function removerPreco(botao) {
+  botao.parentElement.remove();
+}
+
+// ===== SALVAR =====
+async function salvar() {
+  const precos = [];
+
+  document.querySelectorAll("#precos .preco-row").forEach(div => {
+    const inputs = div.querySelectorAll("input");
+
+    if (inputs[0].value.trim() || inputs[1].value.trim()) {
+      precos.push({
+        quantidade: inputs[0].value.trim(),
+        preco: inputs[1].value.trim()
+      });
+    }
+  });
+
+  const data = {
+    produto: document.getElementById("produto").value,
+    material: document.getElementById("material").value,
+    tamanho: document.getElementById("tamanho").value,
+    acabamento: document.getElementById("acabamento").value,
+    precos
+  };
+
+  if (!data.produto || !data.material || !data.tamanho || !data.acabamento) {
+    alert("Preencha todos os campos.");
+    return;
+  }
+
+  if (precos.length === 0) {
+    alert("Adicione pelo menos um preço.");
+    return;
+  }
+
+  if (editIndex !== null) {
+    await fetch("/produtos/" + editIndex, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(data)
+    });
+
+    alert("Produto atualizado!");
+  } else {
+    await fetch("/produtos", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(data)
+    });
+
+    alert("Produto salvo!");
+  }
+
+  limparFormulario();
+  await carregarProdutos();
+  await carregarStats();
+}
+
+// ===== LIMPAR / CANCELAR =====
+function limparFormulario() {
+  document.getElementById("precos").innerHTML = "";
+  editIndex = null;
+
+  document.getElementById("statusEdicao").style.display = "none";
+  document.getElementById("btnCancelarEdicao").style.display = "none";
+}
+
+function cancelarEdicao() {
+  limparFormulario();
+}
+
+// ===== EDITAR =====
+function editar(index) {
+  const p = produtosCache[index];
+
+  if (!p) return;
+
+  document.getElementById("produto").value = p.produto;
+  document.getElementById("material").value = p.material;
+  document.getElementById("tamanho").value = p.tamanho;
+  document.getElementById("acabamento").value = p.acabamento;
+
+  document.getElementById("precos").innerHTML = "";
+
+  if (Array.isArray(p.precos)) {
+    p.precos.forEach(pr => addPreco(pr.quantidade, pr.preco));
+  }
+
+  editIndex = index;
+
+  document.getElementById("statusEdicao").style.display = "block";
+  document.getElementById("btnCancelarEdicao").style.display = "inline-block";
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+// ===== DUPLICAR =====
+async function duplicar(index) {
+  await fetch("/produtos/" + index + "/duplicar", {
+    method: "POST"
+  });
+
+  await carregarProdutos();
+  await carregarStats();
+}
+
+// ===== NOVO DADO =====
+async function addNovo() {
+  const tipo = document.getElementById("tipoNovo").value;
+  const valor = document.getElementById("valorNovo").value.trim();
+
+  if (!valor) {
+    alert("Digite algum valor.");
+    return;
+  }
+
+  const res = await fetch("/config", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ tipo, valor })
+  });
+
+  if (!res.ok) {
+    alert("Erro ao adicionar.");
+    return;
+  }
+
+  document.getElementById("valorNovo").value = "";
+
+  alert("Adicionado!");
+  await carregarConfig();
+}
+
+// ===== LISTAR PRODUTOS =====
+async function carregarProdutos() {
+  const res = await fetch("/produtos");
+  produtosCache = await res.json();
+
+  montarCategorias();
+  montarTabs();
+  renderizarLista();
+}
+
+function montarCategorias() {
+  categoriasCache = {};
+
+  produtosCache.forEach((p, i) => {
+    if (!categoriasCache[p.produto]) categoriasCache[p.produto] = [];
+    categoriasCache[p.produto].push({ ...p, index: i });
+  });
+
+  const categorias = Object.keys(categoriasCache);
+
+  if (!categoriaAtual || !categorias.includes(categoriaAtual)) {
+    categoriaAtual = categorias[0] || null;
+  }
+}
+
+function montarTabs() {
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
+
+  const categorias = Object.keys(categoriasCache);
+
+  if (categorias.length === 0) {
+    return;
+  }
+
+  categorias.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.textContent = `${cat} (${categoriasCache[cat].length})`;
+
+    if (cat === categoriaAtual) {
+      btn.classList.add("active");
+    }
+
+    btn.onclick = () => {
+      categoriaAtual = cat;
+      montarTabs();
+      renderizarLista();
+    };
+
+    tabs.appendChild(btn);
+  });
+}
+
+function renderizarLista() {
+  const lista = document.getElementById("lista");
+  const busca = document.getElementById("busca").value.toLowerCase().trim();
+
+  lista.innerHTML = "";
+
+  if (produtosCache.length === 0) {
+    lista.innerHTML = `<div class="vazio">Nenhum produto cadastrado ainda.</div>`;
+    return;
+  }
+
+  if (!categoriaAtual || !categoriasCache[categoriaAtual]) {
+    lista.innerHTML = `<div class="vazio">Nenhuma categoria selecionada.</div>`;
+    return;
+  }
+
+  let produtos = categoriasCache[categoriaAtual];
+
+  if (busca) {
+    produtos = produtos.filter(p => {
+      const texto = `${p.produto} ${p.material} ${p.tamanho} ${p.acabamento}`.toLowerCase();
+      return texto.includes(busca);
+    });
+  }
+
+  if (produtos.length === 0) {
+    lista.innerHTML = `<div class="vazio">Nenhum produto encontrado nessa busca.</div>`;
+    return;
+  }
+
+  produtos.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "produto-card";
+
+    const precosHTML = Array.isArray(p.precos)
+      ? p.precos.map(pr => `<div>${pr.quantidade} unidades = <strong>${formatarMoeda(pr.preco)}</strong></div>`).join("")
+      : "Sem preços cadastrados";
+
+    div.innerHTML = `
+      <div class="produto-card-header">
+        <div>
+          <h3>${p.produto}</h3>
+          <span class="badge">${p.material}</span>
+          <span class="badge">${p.tamanho}</span>
+          <span class="badge">${p.acabamento}</span>
+        </div>
+
+        <div>
+          <button class="btn-pequeno" onclick="editar(${p.index})">Editar</button>
+          <button class="btn-secundario btn-pequeno" onclick="duplicar(${p.index})">Duplicar</button>
+          <button class="btn-perigo btn-pequeno" onclick="deletar(${p.index})">Excluir</button>
+        </div>
+      </div>
+
+      <div class="precos">
+        ${precosHTML}
+      </div>
+    `;
+
+    lista.appendChild(div);
+  });
+}
+
+// ===== DELETAR =====
+async function deletar(i) {
+  const confirmar = confirm("Tem certeza que deseja excluir este produto?");
+
+  if (!confirmar) return;
+
+  await fetch("/produtos/" + i, {
+    method: "DELETE"
+  });
+
+  await carregarProdutos();
+  await carregarStats();
+}
+
+// ===== INIT =====
+carregarTudo();
+</script>
+
+</body>
+</html>

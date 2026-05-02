@@ -1,0 +1,6 @@
+{
+  "produtos": ["Cartão de visita", "Panfletos"],
+  "materiais": ["Couchê 250g", "Couchê 300g", "Reciclado 240g"],
+  "tamanhos": ["87x47mm", "10x15cm", "A5"],
+  "acabamentos": ["Sem acabamento", "Laminação brilho", "Laminação fosca"]
+}
