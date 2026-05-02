@@ -2,7 +2,7 @@ node_modules
 .env
 sessions
 artes
-.webjs_cache
+.wwebjs_cache
 auth
 auth_pontta
 pedidos.txt
