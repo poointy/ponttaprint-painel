@@ -82,9 +82,6 @@ lerJSON(CONFIG_FILE, configPadrao);
 function validarEnv() {
   if (!WC_URL || !WC_KEY || !WC_SECRET) {
     console.log("❌ Variáveis WooCommerce ausentes.");
-    console.log("WC_URL:", WC_URL ? "OK" : "FALTANDO");
-    console.log("WC_CONSUMER_KEY:", WC_KEY ? "OK" : "FALTANDO");
-    console.log("WC_CONSUMER_SECRET:", WC_SECRET ? "OK" : "FALTANDO");
     return false;
   }
 
@@ -250,75 +247,60 @@ function metaObjeto(produto) {
   return meta;
 }
 
-function extrairPrecosDoProdutoWoo(p) {
-  const meta = metaObjeto(p);
+function pegarAtributo(produto, nome) {
+  const attr = (produto.attributes || []).find(a => {
+    return String(a.name || "").toLowerCase() === nome.toLowerCase();
+  });
+
+  if (!attr) return "Não informado";
+
+  if (Array.isArray(attr.options) && attr.options.length > 0) {
+    return attr.options.join(", ");
+  }
+
+  return "Não informado";
+}
+
+function extrairPrecosDoProdutoWoo(produto) {
+  const meta = metaObjeto(produto);
 
   if (Array.isArray(meta.pontta_precos) && meta.pontta_precos.length > 0) {
     return meta.pontta_precos;
   }
 
-  const atributoQuantidade = (p.attributes || []).find(a => {
+  const atributoQuantidade = (produto.attributes || []).find(a => {
     return String(a.name || "").toLowerCase() === "quantidade";
   });
 
   if (atributoQuantidade && Array.isArray(atributoQuantidade.options)) {
     return atributoQuantidade.options.map(q => ({
       quantidade: q,
-      preco: p.price || p.regular_price || "0"
+      preco: produto.price || produto.regular_price || "0"
     }));
   }
 
   return [
     {
       quantidade: "1",
-      preco: p.price || p.regular_price || "0"
+      preco: produto.price || produto.regular_price || "0"
     }
   ];
 }
 
-function pegarAtributo(p, nome) {
-  const attr = (p.attributes || []).find(a =>
-    String(a.name || "").toLowerCase() === nome.toLowerCase()
-  );
-
-  if (!attr) return "Não informado";
-
-  return Array.isArray(attr.options)
-    ? attr.options.join(", ")
-    : "Não informado";
-}
-
-function normalizarProdutoPainel(p, i) {
-  return {
-    produto: p.name || "",
-
-    material: pegarAtributo(p, "Material"),
-    tamanho: pegarAtributo(p, "Tamanho"),
-    acabamento: pegarAtributo(p, "Acabamento"),
-
-    // aqui a mágica
-    precos: extrairPrecosDoProdutoWoo(p),
-
-    index: i,
-    wooId: p.id,
-    tipoWoo: p.type,
-    permalink: p.permalink || "",
-    status: p.status
-  };
-} {
-  const meta = metaObjeto(p);
+function normalizarProdutoPainel(produto, index) {
+  const meta = metaObjeto(produto);
 
   return {
-    produto: meta.pontta_produto || p.name || "",
-    material: meta.pontta_material || "Não informado",
-    tamanho: meta.pontta_tamanho || "Não informado",
-    acabamento: meta.pontta_acabamento || "Não informado",
-    precos: extrairPrecosDoProdutoWoo(p),
-    index: i,
-    wooId: p.id,
-    tipoWoo: p.type,
-    permalink: p.permalink || "",
-    status: p.status
+    produto: meta.pontta_produto || produto.name || "",
+    material: meta.pontta_material || pegarAtributo(produto, "Material"),
+    tamanho: meta.pontta_tamanho || pegarAtributo(produto, "Tamanho"),
+    acabamento: meta.pontta_acabamento || pegarAtributo(produto, "Acabamento"),
+    precos: extrairPrecosDoProdutoWoo(produto),
+    index,
+    wooId: produto.id,
+    tipoWoo: produto.type,
+    permalink: produto.permalink || "",
+    status: produto.status
   };
 }
 
@@ -375,15 +357,11 @@ app.post("/config", (req, res) => {
 
 app.get("/produtos", async (req, res) => {
   try {
-    console.log("🔎 Buscando produtos no WooCommerce...");
-
     const lista = await wc("get", "/products", null, {
       per_page: 100
     });
 
-    console.log(`✅ Produtos recebidos do WooCommerce: ${lista.length}`);
-
-    const formatado = lista.map((p, i) => normalizarProdutoPainel(p, i));
+    const formatado = lista.map((produto, index) => normalizarProdutoPainel(produto, index));
 
     res.json(formatado);
   } catch (err) {
@@ -545,17 +523,17 @@ app.get("/stats", async (req, res) => {
       per_page: 100
     });
 
-    const produtos = lista.map((p, i) => normalizarProdutoPainel(p, i));
+    const produtos = lista.map((produto, index) => normalizarProdutoPainel(produto, index));
 
     const categorias = {};
     let totalPrecos = 0;
     let somaPrecos = 0;
 
-    produtos.forEach(p => {
-      categorias[p.produto] = (categorias[p.produto] || 0) + 1;
+    produtos.forEach(produto => {
+      categorias[produto.produto] = (categorias[produto.produto] || 0) + 1;
 
-      if (Array.isArray(p.precos)) {
-        p.precos.forEach(pr => {
+      if (Array.isArray(produto.precos)) {
+        produto.precos.forEach(pr => {
           const valor = Number(limparPreco(pr.preco));
 
           if (!isNaN(valor)) {
