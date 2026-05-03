@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "panel": "node server.js",
+    "bot": "node chatbot.js"
   },
   "keywords": [],
   "author": "",
