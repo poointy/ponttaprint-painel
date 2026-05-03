@@ -8,14 +8,12 @@ const axios = require("axios");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ===== CONFIG =====
 const CONFIG_FILE = "config.json";
 
 const WC_URL = process.env.WC_URL;
 const WC_KEY = process.env.WC_CONSUMER_KEY;
 const WC_SECRET = process.env.WC_CONSUMER_SECRET;
 
-// ===== LOGIN =====
 const USUARIO = process.env.PAINEL_USUARIO || "radahthales";
 const SENHA = process.env.PAINEL_SENHA || "870717";
 
@@ -36,7 +34,9 @@ function protegerPainel(req, res, next) {
 
   const [usuario, senha] = Buffer.from(base64, "base64").toString().split(":");
 
-  if (usuario === USUARIO && senha === SENHA) return next();
+  if (usuario === USUARIO && senha === SENHA) {
+    return next();
+  }
 
   res.setHeader("WWW-Authenticate", 'Basic realm="Pontta Print Painel"');
   return res.status(401).send("Usuário ou senha inválidos.");
@@ -46,7 +46,6 @@ app.use(express.json({ limit: "10mb" }));
 app.use(protegerPainel);
 app.use(express.static(path.join(__dirname, "public")));
 
-// ===== JSON CONFIG =====
 function lerJSON(arquivo, padrao) {
   try {
     if (!fs.existsSync(arquivo)) {
@@ -80,7 +79,6 @@ const configPadrao = {
 
 lerJSON(CONFIG_FILE, configPadrao);
 
-// ===== WOOCOMMERCE =====
 function validarEnv() {
   if (!WC_URL || !WC_KEY || !WC_SECRET) {
     console.log("❌ Variáveis WooCommerce ausentes.");
@@ -116,10 +114,13 @@ async function wc(method, endpoint, data = null, extra = {}) {
   return res.data;
 }
 
-// ===== UTIL =====
 function limparPreco(valor) {
   if (!valor) return "0";
-  return String(valor).replace("R$", "").replace(/\./g, "").replace(",", ".").trim();
+  return String(valor)
+    .replace("R$", "")
+    .replace(/\./g, "")
+    .replace(",", ".")
+    .trim();
 }
 
 function formatarPrecoApi(valor) {
@@ -292,12 +293,10 @@ function normalizarProdutoPainel(p, i) {
   };
 }
 
-// ===== ROTAS =====
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// TESTE
 app.get("/teste-woo", async (req, res) => {
   try {
     const produtos = await wc("get", "/products", null, {
@@ -319,7 +318,6 @@ app.get("/teste-woo", async (req, res) => {
   }
 });
 
-// Config
 app.get("/config", (req, res) => {
   res.json(lerJSON(CONFIG_FILE, configPadrao));
 });
@@ -346,9 +344,6 @@ app.post("/config", (req, res) => {
   res.json({ ok: true });
 });
 
-// ===== PRODUTOS =====
-
-// LISTAR
 app.get("/produtos", async (req, res) => {
   try {
     console.log("🔎 Buscando produtos no WooCommerce...");
@@ -372,7 +367,6 @@ app.get("/produtos", async (req, res) => {
   }
 });
 
-// CRIAR
 app.post("/produtos", async (req, res) => {
   try {
     const d = req.body;
@@ -405,7 +399,6 @@ app.post("/produtos", async (req, res) => {
   }
 });
 
-// EDITAR
 app.put("/produtos/:index", async (req, res) => {
   try {
     const index = Number(req.params.index);
@@ -420,7 +413,6 @@ app.put("/produtos/:index", async (req, res) => {
     }
 
     const d = req.body;
-
     let atualizado;
 
     if (d.precos.length === 1) {
@@ -447,7 +439,6 @@ app.put("/produtos/:index", async (req, res) => {
   }
 });
 
-// DUPLICAR
 app.post("/produtos/:index/duplicar", async (req, res) => {
   try {
     const index = Number(req.params.index);
@@ -491,7 +482,6 @@ app.post("/produtos/:index/duplicar", async (req, res) => {
   }
 });
 
-// DELETAR
 app.delete("/produtos/:index", async (req, res) => {
   try {
     const index = Number(req.params.index);
@@ -520,7 +510,6 @@ app.delete("/produtos/:index", async (req, res) => {
   }
 });
 
-// STATS
 app.get("/stats", async (req, res) => {
   try {
     const lista = await wc("get", "/products", null, {
@@ -566,7 +555,6 @@ app.get("/stats", async (req, res) => {
   }
 });
 
-// ===== START =====
 app.listen(PORT, () => {
   console.log("🚀 Servidor rodando na porta " + PORT);
 });
