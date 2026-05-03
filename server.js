@@ -276,7 +276,36 @@ function extrairPrecosDoProdutoWoo(p) {
   ];
 }
 
+function pegarAtributo(p, nome) {
+  const attr = (p.attributes || []).find(a =>
+    String(a.name || "").toLowerCase() === nome.toLowerCase()
+  );
+
+  if (!attr) return "Não informado";
+
+  return Array.isArray(attr.options)
+    ? attr.options.join(", ")
+    : "Não informado";
+}
+
 function normalizarProdutoPainel(p, i) {
+  return {
+    produto: p.name || "",
+
+    material: pegarAtributo(p, "Material"),
+    tamanho: pegarAtributo(p, "Tamanho"),
+    acabamento: pegarAtributo(p, "Acabamento"),
+
+    // aqui a mágica
+    precos: extrairPrecosDoProdutoWoo(p),
+
+    index: i,
+    wooId: p.id,
+    tipoWoo: p.type,
+    permalink: p.permalink || "",
+    status: p.status
+  };
+} {
   const meta = metaObjeto(p);
 
   return {
