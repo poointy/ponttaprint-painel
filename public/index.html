@@ -2,17 +2,23 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pontta Print Painel</title>
 
 <style>
 :root {
-  --azul: #0a2342;
+  --azul: #071b35;
+  --azul-2: #0d376b;
   --laranja: #ff6b35;
-  --fundo: #f3f5f8;
+  --laranja-2: #ff8a5c;
+  --fundo: #eef2f7;
   --card: #ffffff;
-  --texto: #1f2937;
-  --cinza: #6b7280;
-  --borda: #e5e7eb;
+  --texto: #142033;
+  --cinza: #64748b;
+  --borda: #dce3ec;
+  --sucesso: #16a34a;
+  --perigo: #dc2626;
+  --sombra: 0 18px 45px rgba(15, 23, 42, 0.10);
 }
 
 * {
@@ -21,31 +27,66 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: var(--fundo);
+  background:
+    radial-gradient(circle at top left, rgba(255,107,53,0.10), transparent 28%),
+    linear-gradient(180deg, #f7f9fc 0%, var(--fundo) 100%);
   margin: 0;
   color: var(--texto);
 }
 
 header {
-  background: linear-gradient(135deg, #0a2342, #123b6d);
+  background:
+    linear-gradient(135deg, rgba(7,27,53,0.97), rgba(13,55,107,0.96)),
+    url("logo-pontta.png");
+  background-size: cover;
+  background-position: center;
   color: white;
-  padding: 28px 20px;
-  text-align: center;
+  padding: 34px 24px;
+  border-bottom: 4px solid var(--laranja);
 }
 
-header h1 {
+.header-inner {
+  max-width: 1180px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.logo-box {
+  width: 92px;
+  height: 92px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.logo-box img {
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+}
+
+.header-text h1 {
   margin: 0;
-  font-size: 30px;
+  font-size: 34px;
+  letter-spacing: -0.5px;
 }
 
-header p {
+.header-text p {
   margin: 8px 0 0;
   color: #dbeafe;
+  font-size: 15px;
 }
 
 .container {
-  padding: 24px;
-  max-width: 1150px;
+  padding: 26px;
+  max-width: 1180px;
   margin: auto;
 }
 
@@ -53,128 +94,177 @@ header p {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
 .metric-card {
-  background: var(--card);
-  padding: 20px;
-  border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-  border: 1px solid var(--borda);
+  background: rgba(255,255,255,0.92);
+  padding: 22px;
+  border-radius: 18px;
+  box-shadow: var(--sombra);
+  border: 1px solid rgba(220,227,236,0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card::before {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  right: -24px;
+  top: -24px;
+  background: linear-gradient(135deg, var(--laranja), transparent);
+  opacity: 0.18;
+  border-radius: 50%;
 }
 
 .metric-card span {
   color: var(--cinza);
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .metric-card strong {
   display: block;
-  margin-top: 8px;
-  font-size: 28px;
+  margin-top: 10px;
+  font-size: 32px;
   color: var(--azul);
 }
 
 .card {
-  background: var(--card);
-  padding: 22px;
-  margin-bottom: 22px;
-  border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-  border: 1px solid var(--borda);
+  background: rgba(255,255,255,0.96);
+  padding: 24px;
+  margin-bottom: 24px;
+  border-radius: 18px;
+  box-shadow: var(--sombra);
+  border: 1px solid rgba(220,227,236,0.95);
 }
 
 .card h2 {
   margin-top: 0;
   color: var(--azul);
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card h2::before {
+  content: "";
+  width: 8px;
+  height: 24px;
+  background: var(--laranja);
+  border-radius: 20px;
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  gap: 16px;
 }
 
 select, input {
   width: 100%;
-  padding: 12px;
+  padding: 13px 14px;
   margin-top: 8px;
-  border-radius: 8px;
-  border: 1px solid #cfd6df;
-  background: white;
+  border-radius: 11px;
+  border: 1px solid #cfd8e3;
+  background: #fff;
   font-size: 14px;
+  transition: 0.2s;
+}
+
+select:focus, input:focus {
+  outline: none;
+  border-color: var(--laranja);
+  box-shadow: 0 0 0 4px rgba(255,107,53,0.14);
 }
 
 label {
-  font-size: 13px;
-  font-weight: bold;
+  font-size: 12px;
+  font-weight: 800;
   color: var(--cinza);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 button {
-  background: var(--laranja);
+  background: linear-gradient(135deg, var(--laranja), var(--laranja-2));
   border: none;
   color: white;
-  padding: 11px 14px;
-  margin-top: 10px;
+  padding: 12px 15px;
+  margin-top: 12px;
   cursor: pointer;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 11px;
+  font-weight: 800;
+  transition: 0.2s;
+  box-shadow: 0 8px 18px rgba(255,107,53,0.24);
 }
 
 button:hover {
-  filter: brightness(0.95);
+  transform: translateY(-1px);
+  filter: brightness(0.98);
 }
 
 .btn-secundario {
-  background: #334155;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  box-shadow: 0 8px 18px rgba(30,41,59,0.18);
 }
 
 .btn-perigo {
-  background: #dc2626;
+  background: linear-gradient(135deg, #b91c1c, #ef4444);
+  box-shadow: 0 8px 18px rgba(220,38,38,0.18);
 }
 
 .btn-cinza {
-  background: #6b7280;
+  background: linear-gradient(135deg, #64748b, #94a3b8);
+  box-shadow: 0 8px 18px rgba(100,116,139,0.18);
 }
 
 .btn-pequeno {
-  padding: 8px 10px;
-  font-size: 13px;
+  padding: 8px 11px;
+  font-size: 12px;
   margin-right: 6px;
 }
 
 .linha {
-  height: 3px;
-  background: var(--laranja);
-  margin: 30px 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--laranja), transparent);
+  margin: 32px 0;
   border-radius: 10px;
 }
 
 .preco-row {
   display: grid;
   grid-template-columns: 1fr 1fr auto;
-  gap: 10px;
+  gap: 12px;
   align-items: end;
-  margin-top: 8px;
+  margin-top: 10px;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--borda);
 }
 
 .tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 14px 0;
+  margin: 16px 0;
 }
 
 .tabs button {
-  background: #e5e7eb;
-  color: #111827;
+  background: #e8eef6;
+  color: #0f172a;
   margin-top: 0;
+  box-shadow: none;
 }
 
 .tabs button.active {
-  background: var(--laranja);
+  background: linear-gradient(135deg, var(--azul), var(--azul-2));
   color: white;
 }
 
@@ -183,46 +273,58 @@ button:hover {
   grid-template-columns: 1fr auto;
   gap: 12px;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .produto-card {
-  background: #f9fafb;
-  padding: 16px;
-  margin-top: 12px;
-  border-radius: 12px;
-  border-left: 5px solid var(--laranja);
+  background: #fbfdff;
+  padding: 18px;
+  margin-top: 14px;
+  border-radius: 16px;
   border: 1px solid var(--borda);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
 }
 
 .produto-card-header {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
 }
 
 .produto-card h3 {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   color: var(--azul);
+  font-size: 20px;
 }
 
 .badge {
   display: inline-block;
-  background: #e0f2fe;
+  background: #eaf3ff;
   color: #075985;
-  padding: 4px 8px;
+  padding: 6px 10px;
   border-radius: 999px;
   font-size: 12px;
+  font-weight: 700;
   margin-right: 5px;
   margin-top: 5px;
+  border: 1px solid #cfe5ff;
 }
 
 .precos {
-  margin-top: 10px;
+  margin-top: 12px;
   background: white;
-  border-radius: 8px;
-  padding: 10px;
+  border-radius: 12px;
+  padding: 12px;
   border: 1px solid var(--borda);
+}
+
+.precos div {
+  padding: 6px 0;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.precos div:last-child {
+  border-bottom: none;
 }
 
 .status-edicao {
@@ -230,21 +332,26 @@ button:hover {
   background: #fff7ed;
   border: 1px solid #fed7aa;
   color: #9a3412;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 14px;
+  padding: 13px;
+  border-radius: 12px;
+  margin-bottom: 16px;
   font-weight: bold;
 }
 
 .vazio {
   color: var(--cinza);
-  padding: 20px;
+  padding: 22px;
   background: #f9fafb;
-  border-radius: 10px;
+  border-radius: 14px;
   border: 1px dashed #cbd5e1;
 }
 
 @media (max-width: 800px) {
+  .header-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
   .grid-dashboard,
   .form-grid,
   .toolbar {
@@ -265,13 +372,20 @@ button:hover {
 <body>
 
 <header>
-  <h1>Pontta Print - Painel</h1>
-  <p>Gerencie produtos, materiais, acabamentos, tamanhos e preços do seu atendimento.</p>
+  <div class="header-inner">
+    <div class="logo-box">
+      <img src="logo-pontta.png" alt="Pontta Print">
+    </div>
+
+    <div class="header-text">
+      <h1>Pontta Print - Painel</h1>
+      <p>Gerencie produtos, materiais, acabamentos, tamanhos e preços do seu atendimento.</p>
+    </div>
+  </div>
 </header>
 
 <div class="container">
 
-<!-- DASHBOARD -->
 <div class="grid-dashboard">
   <div class="metric-card">
     <span>Total de produtos cadastrados</span>
@@ -289,7 +403,6 @@ button:hover {
   </div>
 </div>
 
-<!-- CADASTRO -->
 <div class="card">
 <h2>Cadastrar Produto</h2>
 
@@ -329,7 +442,6 @@ button:hover {
 
 <div class="linha"></div>
 
-<!-- NOVOS DADOS -->
 <div class="card">
 <h2>Adicionar Novo Dado</h2>
 
@@ -355,7 +467,6 @@ button:hover {
 
 <div class="linha"></div>
 
-<!-- LISTA -->
 <div class="card">
 <h2>Produtos Cadastrados</h2>
 
@@ -377,7 +488,6 @@ let produtosCache = [];
 let categoriasCache = {};
 let categoriaAtual = null;
 
-// ===== UTIL =====
 function formatarMoeda(valor) {
   const numero = Number(String(valor).replace(",", "."));
 
@@ -389,14 +499,12 @@ function formatarMoeda(valor) {
   });
 }
 
-// ===== CARREGAR TUDO =====
 async function carregarTudo() {
   await carregarConfig();
   await carregarProdutos();
   await carregarStats();
 }
 
-// ===== CARREGAR CONFIG =====
 async function carregarConfig() {
   const res = await fetch("/config");
   const config = await res.json();
@@ -419,7 +527,6 @@ function preencher(id, lista) {
   });
 }
 
-// ===== DASHBOARD =====
 async function carregarStats() {
   const res = await fetch("/stats");
   const stats = await res.json();
@@ -429,7 +536,6 @@ async function carregarStats() {
   document.getElementById("dashMedia").textContent = formatarMoeda(stats.mediaPreco || 0);
 }
 
-// ===== PREÇOS =====
 function addPreco(q = "", p = "") {
   const div = document.createElement("div");
   div.className = "preco-row";
@@ -455,7 +561,6 @@ function removerPreco(botao) {
   botao.parentElement.remove();
 }
 
-// ===== SALVAR =====
 async function salvar() {
   const precos = [];
 
@@ -511,7 +616,6 @@ async function salvar() {
   await carregarStats();
 }
 
-// ===== LIMPAR / CANCELAR =====
 function limparFormulario() {
   document.getElementById("precos").innerHTML = "";
   editIndex = null;
@@ -524,7 +628,6 @@ function cancelarEdicao() {
   limparFormulario();
 }
 
-// ===== EDITAR =====
 function editar(index) {
   const p = produtosCache[index];
 
@@ -552,7 +655,6 @@ function editar(index) {
   });
 }
 
-// ===== DUPLICAR =====
 async function duplicar(index) {
   await fetch("/produtos/" + index + "/duplicar", {
     method: "POST"
@@ -562,7 +664,6 @@ async function duplicar(index) {
   await carregarStats();
 }
 
-// ===== NOVO DADO =====
 async function addNovo() {
   const tipo = document.getElementById("tipoNovo").value;
   const valor = document.getElementById("valorNovo").value.trim();
@@ -589,7 +690,6 @@ async function addNovo() {
   await carregarConfig();
 }
 
-// ===== LISTAR PRODUTOS =====
 async function carregarProdutos() {
   const res = await fetch("/produtos");
   produtosCache = await res.json();
@@ -705,7 +805,6 @@ function renderizarLista() {
   });
 }
 
-// ===== DELETAR =====
 async function deletar(i) {
   const confirmar = confirm("Tem certeza que deseja excluir este produto?");
 
@@ -719,7 +818,6 @@ async function deletar(i) {
   await carregarStats();
 }
 
-// ===== INIT =====
 carregarTudo();
 </script>
 
